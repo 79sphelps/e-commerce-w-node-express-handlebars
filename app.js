@@ -1,35 +1,37 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
+'use strict';
+
+const createError = require('http-errors');
+const express = require('express');
+const ath = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const url = 'mongodb://localhost:27017/shopping';
 mongoose.connect(url);
-var session = require('express-session');
-var passport = require('passport');
-var flash = require('connect-flash');
-var validator = require('express-validator');
-var expressHbs = require('express-handlebars');
-var MongoStore = require('connect-mongo')(session); // must be imported after declaring the 'session' var above
+const session = require('express-session');
+const passport = require('passport');
+const flash = require('connect-flash');
+const validator = require('express-validator');
+const expressHbs = require('express-handlebars');
+const MongoStore = require('connect-mongo')(session); // must be imported after declaring the 'session' var above
 
 // Import the passport configuration
 require('./config/passport');
 
 // Create the main application
-var app = express();
+const app = express();
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://192.168.0.32:3000");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header('Access-Control-Allow-Origin', 'http://192.168.0.32:3000');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   next();
 });
 
 // Declare routing variables
-var indexRouter = require('./routes/index');
-var userRouter = require('./routes/user');
+const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
 
 //-------------------------------------------------------------------------
 // view engine setup

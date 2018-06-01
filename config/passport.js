@@ -1,9 +1,9 @@
-var passport = require("passport");
+const passport = require("passport");
 // if you import passport in 2 different files, the SAME instance is available in the other file!
 // ** just because you are importing here, it doesn't mean you have 2 instances running!
 
-var User = require("../models/user");
-var LocalStrategy = require("passport-local").Strategy;
+const User = require("../models/user");
+const LocalStrategy = require("passport-local").Strategy;
 
 
 passport.serializeUser((user, done) => {

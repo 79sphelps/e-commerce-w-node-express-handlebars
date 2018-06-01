@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var Cart = require('../models/cart');
-var Product = require('../models/product');
-var Order = require('../models/order');
+const express = require('express');
+const router = express.Router();
+const Cart = require('../models/cart');
+const Product = require('../models/product');
+const Order = require('../models/order');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
