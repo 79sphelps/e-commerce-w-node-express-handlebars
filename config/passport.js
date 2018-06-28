@@ -1,10 +1,11 @@
+'use strict';
+
 const passport = require("passport");
 // if you import passport in 2 different files, the SAME instance is available in the other file!
 // ** just because you are importing here, it doesn't mean you have 2 instances running!
 
 const User = require("../models/user");
 const LocalStrategy = require("passport-local").Strategy;
-
 
 passport.serializeUser((user, done) => {
     done(null, user.id);    // whenever you want to store the user in your session, serialize it by ID.
@@ -24,10 +25,10 @@ passport.use("local.signup", new LocalStrategy({
     // Perform basic validation
     req.checkBody('email', 'Invalid email').notEmpty().isEmail(); 
     req.checkBody('password', 'Invalid password').notEmpty().isLength({min: 4}); 
-    var errors = req.validationErrors();
+    let errors = req.validationErrors();
 
     if (errors) {
-        var messages = [];
+        let messages = [];
         errors.forEach((err) => {
             messages.push(err.msg);
         });
@@ -41,7 +42,7 @@ passport.use("local.signup", new LocalStrategy({
         if (user) {
             return done(null, false, {message: 'Email already in use.'});
         }
-        var newUser = new User();
+        let newUser = new User();
         newUser.email = email;
         newUser.password = newUser.encryptPassword(password);
         newUser.save((err, result) => {
@@ -61,10 +62,10 @@ passport.use("local.signin", new LocalStrategy({
       // Perform basic validation
       req.checkBody('email', 'Invalid email').notEmpty().isEmail();
       req.checkBody('password', 'Invalid password').notEmpty();
-      var errors = req.validationErrors();
+      let errors = req.validationErrors();
 
       if (errors) {
-          var messages = [];
+        let messages = [];
           errors.forEach((err) => {
               messages.push(err.msg);
           });
@@ -84,4 +85,4 @@ passport.use("local.signin", new LocalStrategy({
 
         return done(null, user);
     });
-}))
+}));

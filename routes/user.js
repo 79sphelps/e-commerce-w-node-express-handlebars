@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
@@ -18,7 +20,7 @@ router.get(`${HOST_IP}/profile`, isLoggedIn, (req, res, next) => {
     if (err) {
       return res.write('Error!');
     }
-    var cart;
+    let cart;
     orders.forEach((order) => {
       cart = new Cart(order.cart);
       order.items = cart.generateArray();
@@ -38,7 +40,7 @@ router.use(`${HOST_IP}/`, notLoggedIn, (req, res, next) => {
 });
 
 router.get(`${HOST_IP}/signup`, (req, res, next) => {
-  var messages = req.flash('error');
+  let messages = req.flash('error');
   res.render('user/signup', {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0});
 })
 
@@ -47,7 +49,7 @@ router.post(`${HOST_IP}/signup`, passport.authenticate('local.signup', {
   failureFlash: true
 }), (req, res, next) => {
   if (req.session.oldUrl) {
-    var oldUrl = req.session.oldUrl;
+    let oldUrl = req.session.oldUrl;
     req.session.oldUrl = null;
     res.redirect(oldUrl);
   } else {
@@ -56,7 +58,7 @@ router.post(`${HOST_IP}/signup`, passport.authenticate('local.signup', {
 });
 
 router.get(`${HOST_IP}/signin`, (req, res, next) => {
-  var messages = req.flash('error');
+  let messages = req.flash('error');
   res.render('user/signin', {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0});
 });
 
@@ -65,7 +67,7 @@ router.post(`${HOST_IP}/signin`, passport.authenticate('local.signin', {
   failureFlash: true
 }), (req, res, next) => {
   if (req.session.oldUrl) {
-    var oldUrl = req.session.oldUrl;
+    let oldUrl = req.session.oldUrl;
     req.session.oldUrl = null;
     res.redirect(oldUrl);
   } else {

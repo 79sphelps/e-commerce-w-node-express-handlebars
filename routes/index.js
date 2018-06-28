@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const router = express.Router();
 const Cart = require('../models/cart');
@@ -6,24 +8,30 @@ const Order = require('../models/order');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  var successMsg = req.flash('success')[0];
+  let successMsg = req.flash('success')[0];
   //res.render('shop/index', { title: 'Express' });
   //var products = Product.find();
   Product.find((err, docs) => {
-    var productChunks = [];
-    var chunkSize = 3;
-    for (var i = 0; i < docs.length; i += chunkSize) {
+    let productChunks = [];
+    let chunkSize = 3;
+    for (let i = 0; i < docs.length; i += chunkSize) {
       productChunks.push(docs.slice(i, i + chunkSize));
     }
-    res.render('shop/index', { title: 'Shopping Cart', products: productChunks, successMsg: successMsg, noMessages: !successMsg });
+    res.render('shop/index', 
+      { 
+        title: 'Shopping Cart', 
+        products: productChunks, 
+        successMsg: successMsg, 
+        noMessages: !successMsg 
+      });
   });
 });
 
 router.get('/add-to-cart/:id', (req, res, next) => {
   // we want to have a cart object in the session!
-  var productId = req.params.id;
+  let productId = req.params.id;
   // var cart = new Cart(req.session.cart ? req.session.cart : {items: {}});
-  var cart = new Cart(req.session.cart ? req.session.cart : {});
+  let cart = new Cart(req.session.cart ? req.session.cart : {});
 
   Product.findById(productId, (err, product) => {
     if (err) {
@@ -37,8 +45,8 @@ router.get('/add-to-cart/:id', (req, res, next) => {
 });
 
 router.get('/reduce/:id', (req, res, next) => {
-  var productId = req.params.id;
-  var cart = new Cart(req.session.cart ? req.session.cart : {});
+  let productId = req.params.id;
+  let cart = new Cart(req.session.cart ? req.session.cart : {});
 
   cart.reduceByOne(productId);
   req.session.cart = cart;
@@ -46,8 +54,8 @@ router.get('/reduce/:id', (req, res, next) => {
 })
 
 router.get('/remove/:id', (req, res, next) => {
-  var productId = req.params.id;
-  var cart = new Cart(req.session.cart ? req.session.cart : {});
+  let productId = req.params.id;
+  let cart = new Cart(req.session.cart ? req.session.cart : {});
 
   cart.removeItem(productId);
   req.session.cart = cart;
@@ -58,7 +66,7 @@ router.get('/shopping-cart', (req, res, next) => {
   if (!req.session.cart) {
     return res.render('shop/shopping-cart', {products: null});
   }
-  var cart = new Cart(req.session.cart);
+  let cart = new Cart(req.session.cart);
   res.render('shop/shopping-cart', {products: cart.generateArray(), totalPrice: cart.totalPrice});
 })
 
@@ -71,8 +79,8 @@ router.get('/checkout', isLoggedIn, (req, res, next) => {
 
   console.log('req.session.cart: ', req.session.cart);
 
-  var cart = new Cart(req.session.cart);
-  var errMsg = req.flash('error')[0];
+  let cart = new Cart(req.session.cart);
+  let errMsg = req.flash('error')[0];
   res.render('shop/checkout', {total: cart.totalPrice, errMsg: errMsg, noErrors: !errMsg})
 })
 
@@ -82,7 +90,7 @@ router.post('/checkout', isLoggedIn, (req, res, next) => {
   if (!req.session.cart) {
       return res.redirect('/shopping-cart');
   }
-  var cart = new Cart(req.session.cart);
+  let cart = new Cart(req.session.cart);
   
   console.log('created the cart...');
 
@@ -92,7 +100,7 @@ router.post('/checkout', isLoggedIn, (req, res, next) => {
       "sk_test_fwmVPdJfpkmwlQRedXec5IxR"
   );
   */
-  var stripe = require("stripe")(
+  let stripe = require("stripe")(
     "sk_test_l6yzGVoH7wUkz5F7vRrRlczU"
   )
   stripe.charges.create({
@@ -113,7 +121,7 @@ router.post('/checkout', isLoggedIn, (req, res, next) => {
       console.log('name: ', req.body.name);
       console.log('paymentId: ', charge.id);
 
-      var order = new Order({
+      let order = new Order({
           user: req.user,
           cart: cart,
           address: req.body.address,
