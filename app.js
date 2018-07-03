@@ -23,19 +23,15 @@ require('./config/passport');
 const app = express();
 
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://192.168.0.32:3000');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   next();
 });
 
-// Declare routing variables
-const indexRouter = require('./routes/index');
-const userRouter = require('./routes/user');
-
 //-------------------------------------------------------------------------
 // view engine setup
-//app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}));
 //app.set('view engine', 'hbs');
 app.set('view engine', '.hbs');
@@ -77,8 +73,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/user', userRouter);
+// Declare routing variables
+const indexRouter = require('./routes/index');
+const userRouter = require('./routes/user');
+
 app.use('/', indexRouter);
+app.use('/user', userRouter);
 
 //-------------------------------------------------------------------------
 // catch 404 and forward to error handler
